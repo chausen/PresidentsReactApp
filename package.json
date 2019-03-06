@@ -3,9 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
+    "bootstrap": "^4.3.1",
+    "cheerio": "^1.0.0-rc.2",
+    "moment": "^2.24.0",
+    "puppeteer": "^1.12.2",
     "react": "^16.8.3",
+    "react-datepicker": "^2.1.0",
     "react-dom": "^16.8.3",
-    "react-scripts": "2.1.5"
+    "react-scripts": "2.1.5",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4"
   },
   "scripts": {
     "start": "react-scripts start",
