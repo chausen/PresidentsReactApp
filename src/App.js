@@ -40,11 +40,11 @@ class App extends Component {
 
         let presidents = res.data;
 
-        presidents.sort( this.compareBirthdays(a, b) );
+        presidents.sort( (a, b) => this.compareBirthdays(a.birthday, b.birthday) );
                                 
         for (let i = 0; i < presidents.length; i++) {
-          if (this.Older(usersBirthday, (presidents[i].birthday)) ||
-              i == presidents.length - 1) {
+          if (this.isEarlier(usersBirthday, (presidents[i].birthday)) ||
+              i === presidents.length - 1) {
             this.spreadSearch(presidents, i);
             break;
           }
@@ -52,20 +52,28 @@ class App extends Component {
       });
   }
 
-  compareBirthdays(birthday1, birthday2) {
+  compareBirthdays(birthday1, birthday2) {    
+    birthday1 = new Date(birthday1)
+    birthday2 = new Date(birthday2)
+
     if ( (birthday1.getMonth() < birthday2.getMonth()) ||
-         (birthday1.getMonth() === birthday2.getMonth()) &&
-         (birthday1.getDay() < birthday.getDay()) ) {
+         ((birthday1.getMonth() === birthday2.getMonth()) &&
+         (birthday1.getDay() < birthday2.getDay())) ) {
          
       return -1;
     }
     if ( (birthday1.getMonth() > birthday2.getMonth()) ||
-         (birthday1.getMonth() === birthday2.getMonth()) &&
-         (birthday1.getDay() > birthday.getDay()) ) {
+         ((birthday1.getMonth() === birthday2.getMonth()) &&
+         (birthday1.getDay() > birthday2.getDay())) ) {
 
       return 1;
     }
     return 0;         
+  }
+
+  // Is birthday1 earlier than birthday2
+  isEarlier(birthday1, birthday2) {
+    return this.compareBirthdays(birthday1, birthday2);
   }
 
   spreadSearch(presidents, indexOfFirstYoungestPresident) {
@@ -73,7 +81,7 @@ class App extends Component {
     let usersBirthday = this.state.startDate;
     let backwardIndex = indexOfFirstYoungestPresident;
     let forwardIndex = indexOfFirstYoungestPresident;
-    let exhaustedRightSide = fowardIndex >= presidents.length;
+    let exhaustedRightSide = forwardIndex >= presidents.length;
     let exhaustedLeftSide = backwardIndex < 0;
     
     while (closestPresidents.length < this.numClosestPresidents && 
@@ -114,7 +122,7 @@ class App extends Component {
 
     this.setState({
       closestPresidentsByAge: closestPresidents.map( pres => 
-                                <PresidentCard president={pres} /> )
+                                <PresidentCard key={pres.name + pres.birthday} president={pres} /> )
     });
   }
 
